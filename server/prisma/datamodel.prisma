@@ -1,0 +1,5 @@
+type Todo {
+  id: ID! @unique
+  content: String!
+  done: Boolean! @default(value: "false")
+}

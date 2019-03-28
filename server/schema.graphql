@@ -1,0 +1,23 @@
+
+
+type Query {
+  info: String!
+  todos: [Todo]
+  findTodo(id: ID!): Todo!
+}
+
+type Mutation {
+  createTodo(content: String!): Todo!
+  deleteTodo(id: ID!): Todo!
+  updateTodo(id: ID!, done: Boolean!): Todo!
+}
+
+type Todo {
+  id: ID!
+  content: String!
+  done: Boolean!
+}
+
+type Subscription {
+  subscribeTodo: Todo!
+}
