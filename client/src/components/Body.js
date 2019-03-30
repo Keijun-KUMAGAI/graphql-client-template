@@ -8,17 +8,17 @@ import Card from './Card'
 import Form from './Form'
 import { createTodoQuery, todosQuery } from '../querys/todoQuerys'
 
-
 function Body(props) {
-  const { todosList } = props
+  const { todosList, flag } = props
   const [newTodo, setNewTodo] = useState('')
   const [fetching, setFetching] = useState(false)
 
-  const filteredTodos = todosList.filter(item => (
-    // (showDoneItem && item.done === true)
-    // || (showNotDoneItem && item.done === false)
-    true
-  ))
+  const filteredTodos = todosList.filter((item) => {
+    if (flag === 'all') return true
+    if (flag === 'done' && item.done) return true
+    if (flag === 'not_yet' && !item.done) return true
+    return false
+  })
 
   const asyncSetFetching = async (newValue) => {
     setFetching(newValue)
@@ -45,7 +45,11 @@ function Body(props) {
   return (
     <div style={{ margin: 24 }}>
       <Grid container spacing={24}>
-        {filteredTodos.map(item => <Card key={item.id} item={item} />)}
+        {filteredTodos.map(item => (
+          <Grid key={item.id} item xs={12} sm={6} md={6} lg={4}>
+            <Card item={item} />
+          </Grid>
+        ))}
       </Grid>
       <Form
         newTodo={newTodo}
@@ -53,7 +57,6 @@ function Body(props) {
         handleClick={() => onClickForm(mutationCreateTodo)}
         buttonDisabled={!newTodo || fetching}
       />
-
     </div>
   )
 }
@@ -64,6 +67,7 @@ Body.propTypes = {
     content: PropTypes.string,
     done: PropTypes.bool,
   })).isRequired,
+  flag: PropTypes.string.isRequired,
 }
 
 export default Body
