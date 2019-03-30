@@ -41,7 +41,7 @@ function App() {
                     (showDoneItem && item.done === true)
                     || (showNotDoneItem && item.done === false)
                   ))
-                  .map(item => (<Card item={item} refetch={refetch} />))
+                  .map(item => (<Card key={item.id} item={item} refetch={refetch} />))
                 }
               </Grid>
               <Form refetch={refetch} />
