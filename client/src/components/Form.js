@@ -56,6 +56,7 @@ function Form(props) {
               variant="outlined"
               size="large"
               color="primary"
+              disabled={!newTodo}
               onClick={async () => {
                 await createTodo()
                 setNewTodo('')
