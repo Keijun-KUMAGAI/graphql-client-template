@@ -1,5 +1,6 @@
 import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
+import PropTypes from 'prop-types'
 
 function CardCheckBox(props) {
   const { label, checked, handleClick } = props
@@ -9,6 +10,16 @@ function CardCheckBox(props) {
       {label}
     </div>
   )
+}
+
+CardCheckBox.propTypes = {
+  label: PropTypes.string.isRequired,
+  checked: PropTypes.bool,
+  handleClick: PropTypes.func.isRequired,
+}
+
+CardCheckBox.defaultProps = {
+  checked: false,
 }
 
 export default CardCheckBox

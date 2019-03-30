@@ -2,9 +2,12 @@
 import React, { useState } from 'react'
 import { Mutation } from 'react-apollo'
 import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
+
 import Card from './Card'
 import Form from './Form'
 import { createTodoQuery, todosQuery } from '../querys/todoQuerys'
+
 
 function Body(props) {
   const { todosList } = props
@@ -31,7 +34,7 @@ function Body(props) {
   return (
     <div style={{ margin: 24 }}>
       <Grid container spacing={24}>
-        {filteredTodos.map(item => (<Card key={item.id} item={item} />))}
+        {filteredTodos.map(item => <Card key={item.id} item={item} />)}
       </Grid>
       <Mutation
         mutation={createTodoQuery}
@@ -56,6 +59,14 @@ function Body(props) {
 
     </div>
   )
+}
+
+Body.propTypes = {
+  todosList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    content: PropTypes.string,
+    done: PropTypes.bool,
+  })).isRequired,
 }
 
 export default Body
