@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react'
-import { Mutation } from 'react-apollo'
 import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
+import { useMutation } from 'react-apollo-hooks'
 
 import Card from './Card'
 import Form from './Form'
@@ -31,31 +31,28 @@ function Body(props) {
     await asyncSetFetching(false)
   }
 
+  const mutationCreateTodo = useMutation(createTodoQuery, {
+    variables: { content: newTodo },
+    update: (cache, { data: { createTodo } }) => {
+      const { todos } = cache.readQuery({ query: todosQuery })
+      cache.writeQuery({
+        query: todosQuery,
+        data: { todos: todos.concat([createTodo]) },
+      })
+    },
+  })
+
   return (
     <div style={{ margin: 24 }}>
       <Grid container spacing={24}>
         {filteredTodos.map(item => <Card key={item.id} item={item} />)}
       </Grid>
-      <Mutation
-        mutation={createTodoQuery}
-        variables={{ content: newTodo }}
-        update={(cache, { data: { createTodo } }) => {
-          const { todos } = cache.readQuery({ query: todosQuery })
-          cache.writeQuery({
-            query: todosQuery,
-            data: { todos: todos.concat([createTodo]) },
-          })
-        }}
-      >
-        {createTodo => (
-          <Form
-            newTodo={newTodo}
-            handleChange={v => setNewTodo(v)}
-            handleClick={() => onClickForm(createTodo)}
-            buttonDisabled={!newTodo || fetching}
-          />
-        )}
-      </Mutation>
+      <Form
+        newTodo={newTodo}
+        handleChange={v => setNewTodo(v)}
+        handleClick={() => onClickForm(mutationCreateTodo)}
+        buttonDisabled={!newTodo || fetching}
+      />
 
     </div>
   )
