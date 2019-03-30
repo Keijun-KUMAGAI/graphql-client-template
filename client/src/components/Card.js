@@ -3,9 +3,9 @@ import { Mutation } from 'react-apollo'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import gql from 'graphql-tag'
+
+import CardCheckBox from './CardCheckBox'
 
 const updateTodoQuery = gql`
   mutation($id: ID! $done: Boolean!) {
@@ -28,20 +28,19 @@ const deleteTodoQuery = gql`
 `
 
 function Card(props) {
-  const { item, refetch } = props
+  const { item } = props
   return (
-    <Grid item xs={12} sm={6} md={6} lg={4} key={item.id}>
-      <Paper style={{ height: 50 }}>
+    <Grid item xs={12} sm={6} md={6} lg={4}>
+      <Paper style={{ height: 100 }}>
         <Mutation
           mutation={updateTodoQuery}
           variables={{ id: item.id, done: !item.done }}
         >
           {updateTodo => (
-            <FormControlLabel
-              control={
-                <Checkbox checked={item.done} onChange={() => updateTodo()} value="jason" />
-              }
+            <CardCheckBox
               label={item.content}
+              checked={item.done}
+              handleClick={updateTodo}
             />
           )}
         </Mutation>
@@ -54,10 +53,7 @@ function Card(props) {
               variant="outlined"
               size="small"
               color="primary"
-              onClick={async () => {
-                await deleteTodo()
-                refetch()
-              }}
+              onClick={() => deleteTodo()}
             >
               削除
             </Button>

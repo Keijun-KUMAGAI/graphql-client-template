@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import Grid from '@material-ui/core/Grid'
 import './App.css'
 
 import Header from './components/Header'
-import Card from './components/Card'
-import Form from './components/Form'
+import Body from './components/Body'
+
 
 const todosQuery = gql`
   query {
@@ -19,34 +18,14 @@ const todosQuery = gql`
 `
 
 function App() {
-  const [showDoneItem, setShowDoneItem] = useState(true)
-  const [showNotDoneItem, setShowNotDoneItem] = useState(true)
   return (
     <div className="App">
-      <Header
-        showDoneItem={showDoneItem}
-        showNotDoneItem={showNotDoneItem}
-        setShowDoneItem={setShowDoneItem}
-        setShowNotDoneItem={setShowNotDoneItem}
-      />
+      <Header />
       <Query query={todosQuery}>
-        {({ loading, data, refetch }) => {
+        {({ loading, data }) => {
           const { todos } = data
           if (loading) return <p>Loading...</p>
-          return (
-            <div style={{ margin: 24 }}>
-              <Grid container spacing={24}>
-                {todos
-                  .filter(item => (
-                    (showDoneItem && item.done === true)
-                    || (showNotDoneItem && item.done === false)
-                  ))
-                  .map(item => (<Card key={item.id} item={item} refetch={refetch} />))
-                }
-              </Grid>
-              <Form refetch={refetch} />
-            </div>
-          )
+          return <Body todos={todos} />
         }}
       </Query>
     </div>
