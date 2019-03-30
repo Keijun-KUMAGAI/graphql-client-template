@@ -1,21 +1,10 @@
 import React from 'react'
 import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 import './App.css'
 
 import Header from './components/Header'
 import Body from './components/Body'
-
-
-const todosQuery = gql`
-  query {
-    todos {
-      id
-      content
-      done
-    }
-  }
-`
+import { todosQuery } from './querys/todoQuerys'
 
 function App() {
   return (
@@ -25,7 +14,7 @@ function App() {
         {({ loading, data }) => {
           const { todos } = data
           if (loading) return <p>Loading...</p>
-          return <Body todos={todos} />
+          return <Body todosList={todos} />
         }}
       </Query>
     </div>

@@ -3,29 +3,9 @@ import { Mutation } from 'react-apollo'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import gql from 'graphql-tag'
+import { updateTodoQuery, deleteTodoQuery, todosQuery } from '../querys/todoQuerys'
 
 import CardCheckBox from './CardCheckBox'
-
-const updateTodoQuery = gql`
-  mutation($id: ID! $done: Boolean!) {
-    updateTodo(id: $id, done: $done ) {
-      id
-      done
-      content
-    }
-  }
-`
-
-const deleteTodoQuery = gql`
-  mutation($id: ID!) {
-    deleteTodo(id: $id) {
-      id
-      done
-      content
-    }
-  }
-`
 
 function Card(props) {
   const { item } = props
@@ -35,6 +15,14 @@ function Card(props) {
         <Mutation
           mutation={updateTodoQuery}
           variables={{ id: item.id, done: !item.done }}
+          update={(cache, { data: { updateTodo } }) => {
+            const { todos } = cache.readQuery({ query: todosQuery })
+            const newTodos = todos.map(todo => ((todo.id === updateTodo.id) ? updateTodo : todo))
+            cache.writeQuery({
+              query: todosQuery,
+              data: { todos: newTodos },
+            })
+          }}
         >
           {updateTodo => (
             <CardCheckBox
@@ -47,6 +35,13 @@ function Card(props) {
         <Mutation
           mutation={deleteTodoQuery}
           variables={{ id: item.id }}
+          update={(cache, { data: { deleteTodo } }) => {
+            const { todos } = cache.readQuery({ query: todosQuery })
+            cache.writeQuery({
+              query: todosQuery,
+              data: { todos: todos.filter(todo => todo.id !== deleteTodo.id) },
+            })
+          }}
         >
           {deleteTodo => (
             <Button
