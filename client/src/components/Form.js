@@ -18,6 +18,7 @@ const createTodoQuery = gql`
 function Form(props) {
   const { refetch } = props
   const [newTodo, setNewTodo] = useState('')
+  const [fetching, setFetching] = useState(false)
 
   return (
     <Mutation
@@ -56,11 +57,13 @@ function Form(props) {
               variant="outlined"
               size="large"
               color="primary"
-              disabled={!newTodo}
+              disabled={!newTodo || fetching}
               onClick={async () => {
+                await setFetching(true)
                 await createTodo()
-                setNewTodo('')
-                refetch()
+                await setNewTodo('')
+                await refetch()
+                setFetching(false)
               }}
             >
               作成
