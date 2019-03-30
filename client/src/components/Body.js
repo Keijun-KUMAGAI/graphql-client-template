@@ -2,26 +2,16 @@
 import React, { useState } from 'react'
 import { Mutation } from 'react-apollo'
 import Grid from '@material-ui/core/Grid'
-import gql from 'graphql-tag'
 import Card from './Card'
 import Form from './Form'
-
-const createTodoQuery = gql`
-  mutation($content: String!) {
-    createTodo(content: $content) {
-      id
-      done
-      content
-    }
-  }
-`
+import { createTodoQuery, todosQuery } from '../querys/todoQuerys'
 
 function Body(props) {
-  const { todos } = props
+  const { todosList } = props
   const [newTodo, setNewTodo] = useState('')
   const [fetching, setFetching] = useState(false)
 
-  const filteredTodos = todos.filter(item => (
+  const filteredTodos = todosList.filter(item => (
     // (showDoneItem && item.done === true)
     // || (showNotDoneItem && item.done === false)
     true
@@ -46,6 +36,13 @@ function Body(props) {
       <Mutation
         mutation={createTodoQuery}
         variables={{ content: newTodo }}
+        update={(cache, { data: { createTodo } }) => {
+          const { todos } = cache.readQuery({ query: todosQuery })
+          cache.writeQuery({
+            query: todosQuery,
+            data: { todos: todos.concat([createTodo]) },
+          })
+        }}
       >
         {createTodo => (
           <Form
