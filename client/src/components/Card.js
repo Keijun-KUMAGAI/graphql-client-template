@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import Checkbox from '@material-ui/core/Checkbox'
 import { useMutation } from 'react-apollo-hooks'
 import PropTypes from 'prop-types'
@@ -34,22 +33,20 @@ function Card(props) {
   })
 
   return (
-    <Grid item xs={12} sm={6} md={6} lg={4}>
-      <Paper>
-        <div>
-          <Checkbox checked={item.done} onChange={() => mutationUpdateTodo()} />
-          {item.content}
-        </div>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          onClick={mutationDeleteTodo}
-        >
-          削除
-        </Button>
-      </Paper>
-    </Grid>
+    <Paper>
+      <div>
+        <Checkbox checked={item.done} onChange={() => mutationUpdateTodo()} />
+        {item.content}
+      </div>
+      <Button
+        variant="outlined"
+        size="small"
+        color="primary"
+        onClick={mutationDeleteTodo}
+      >
+        削除
+      </Button>
+    </Paper>
   )
 }
 
