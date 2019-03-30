@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
+import PropTypes from 'prop-types'
 
 
 function Form(props) {
@@ -52,6 +53,18 @@ function Form(props) {
       </Grid>
     </Grid>
   )
+}
+
+Form.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  newTodo: PropTypes.string,
+  buttonDisabled: PropTypes.bool,
+}
+
+Form.defaultProps = {
+  buttonDisabled: false,
+  newTodo: '',
 }
 
 export default Form

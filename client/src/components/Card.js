@@ -3,15 +3,17 @@ import { Mutation } from 'react-apollo'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
 import { updateTodoQuery, deleteTodoQuery, todosQuery } from '../querys/todoQuerys'
 
 import CardCheckBox from './CardCheckBox'
 
 function Card(props) {
   const { item } = props
+
   return (
     <Grid item xs={12} sm={6} md={6} lg={4}>
-      <Paper style={{ height: 100 }}>
+      <Paper>
         <Mutation
           mutation={updateTodoQuery}
           variables={{ id: item.id, done: !item.done }}
@@ -57,6 +59,14 @@ function Card(props) {
       </Paper>
     </Grid>
   )
+}
+
+Card.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.string,
+    content: PropTypes.string,
+    done: PropTypes.bool,
+  }).isRequired,
 }
 
 export default Card
