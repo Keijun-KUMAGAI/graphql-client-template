@@ -4,36 +4,24 @@
 ```
 docker-compose up
 ```
-http://localhost:3000 からアクセス
+client
+http://localhost:3000
 
-## Tasks
+server
+http://localhost:4000
 
-### **1. タスクが一覧できる**
-http://localhost:3000 から閲覧可能
+## Server
+Node.js + Prisma でサクッと実装している。
+メインがClientなので、かなり簡単に作成している。
 
-### **2. タスクが作成できる**
-画面下のTodo新規作成にTodoを入力して左の作成ボタンから作成。
+## Client
+apollo-client, apollo-react-hooksなどを用いて実装。
+eslintなどは状況に応じて変えて欲しい。
 
-### **3. タスクが完了できる**
-各タスクのチェックボックスをクリックすることで完了。
+## Deploy
+herokuを使ってあとでDeployする予定。課金しないとMulti Containerをサポートしていないので、2個のApplicationに分けてデプロイすることになりそう。
 
-### **4. タスクがフィルタリングできる**
-画面上部のNavigationBarの『完了済み』『未完了』の値を切り替えることでフィルタリング可能
-
-### **5. もっともあったら嬉しいと思う機能を追加**
-『保存』『削除』機能を追加
-
-### **6. なぜ5の機能を追加したか**
-
-- Todoというからにはやることを書き出しておいてあとで確認するのがもっとも一般的な使い方。そのためには入力したTodoが保存されることが大前提であると考えた。
-- 完了したTodoが溜まっていったり、間違えて作成したTodoを削除する方法がなかったため追加
-
-### **7. Class Componentを使わず、React Hooksのみを使う**
-GraphQLで書いたため、状態管理が楽になった。当初はreduxを使うことを考えていたが、React Hooksのみで十分であったため、全てのComponentをfunctionalに書き換えた。
-
-### **8. CSSを使ってUIをスタイリングする**
-Material UIを使っているが、細かい箇所はCSSを書いて対応した。
-
-
+## Lint
+eslintを採用。Airbnbを元に自分で適当にカスタマイズ
 
 
